@@ -1,0 +1,721 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--c1:#1a1f2e;--c2:#242938;--c3:#2d3347;--c4:#363d55;
+--acc:#4f8ef7;--acc2:#7c5cfc;--grn:#22c55e;--red:#ef4444;--amb:#f59e0b;
+--txt:#e8ecf4;--txt2:#9aa3b8;--txt3:#5a6379;
+--br:10px;--br2:14px;
+}
+body{background:var(--c1);color:var(--txt);font-family:'Segoe UI',system-ui,sans-serif;font-size:14px;min-height:100vh}
+h2{font-size:20px;font-weight:600}
+h3{font-size:15px;font-weight:600}
+
+.app{display:flex;min-height:100vh}
+.sidebar{width:220px;background:var(--c2);border-right:0.5px solid var(--c4);display:flex;flex-direction:column;flex-shrink:0}
+.logo{padding:20px 18px;border-bottom:0.5px solid var(--c4)}
+.logo-title{font-size:15px;font-weight:700;color:var(--txt)}
+.logo-sub{font-size:11px;color:var(--txt3);margin-top:2px}
+.nav{padding:12px 8px;flex:1}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--br);cursor:pointer;color:var(--txt2);font-size:13px;transition:all .15s;margin-bottom:2px}
+.nav-item:hover{background:var(--c3);color:var(--txt)}
+.nav-item.active{background:var(--acc);color:#fff}
+.nav-item i{font-size:17px;width:20px;text-align:center}
+.nav-section{font-size:10px;color:var(--txt3);padding:14px 10px 6px;text-transform:uppercase;letter-spacing:.8px}
+
+.main{flex:1;overflow:auto;background:var(--c1)}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:0.5px solid var(--c3);background:var(--c2)}
+.page-title{font-size:18px;font-weight:600}
+.topbar-actions{display:flex;gap:10px;align-items:center}
+.btn{padding:7px 16px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:500;transition:all .15s;display:flex;align-items:center;gap:6px}
+.btn-primary{background:var(--acc);color:#fff}
+.btn-primary:hover{background:#3a7be0}
+.btn-ghost{background:transparent;border:0.5px solid var(--c4);color:var(--txt2)}
+.btn-ghost:hover{background:var(--c3);color:var(--txt)}
+.btn-sm{padding:5px 12px;font-size:12px}
+.btn-danger{background:var(--red);color:#fff}
+
+.content{padding:24px}
+
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:var(--c2);border:0.5px solid var(--c3);border-radius:var(--br2);padding:18px 20px}
+.stat-label{font-size:12px;color:var(--txt2);margin-bottom:8px}
+.stat-value{font-size:28px;font-weight:700;line-height:1}
+.stat-sub{font-size:12px;color:var(--txt3);margin-top:6px}
+.stat-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}
+.dot-grn{background:var(--grn)}
+.dot-red{background:var(--red)}
+.dot-amb{background:var(--amb)}
+.dot-blue{background:var(--acc)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.card{background:var(--c2);border:0.5px solid var(--c3);border-radius:var(--br2);padding:20px}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.card-full{grid-column:1/-1}
+
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;color:var(--txt3);text-align:left;padding:8px 12px;border-bottom:0.5px solid var(--c3);font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+td{padding:11px 12px;border-bottom:0.5px solid var(--c3);font-size:13px;color:var(--txt)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--c3)}
+.table-wrap{border-radius:var(--br2);overflow:hidden;background:var(--c2);border:0.5px solid var(--c3)}
+
+.badge{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;display:inline-block}
+.badge-grn{background:rgba(34,197,94,.15);color:#4ade80}
+.badge-red{background:rgba(239,68,68,.15);color:#f87171}
+.badge-amb{background:rgba(245,158,11,.15);color:#fbbf24}
+.badge-blue{background:rgba(79,142,247,.15);color:#93c5fd}
+.badge-gray{background:var(--c3);color:var(--txt2)}
+
+.progress-bar{height:6px;background:var(--c3);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;background:var(--acc)}
+.progress-fill.grn{background:var(--grn)}
+.progress-fill.red{background:var(--red)}
+.progress-fill.amb{background:var(--amb)}
+
+.alert-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:0.5px solid var(--c3)}
+.alert-item:last-child{border-bottom:none}
+.alert-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.alert-icon.red{background:rgba(239,68,68,.15);color:#f87171}
+.alert-icon.amb{background:rgba(245,158,11,.15);color:#fbbf24}
+.alert-icon.blue{background:rgba(79,142,247,.15);color:#93c5fd}
+.alert-title{font-size:13px;font-weight:500}
+.alert-sub{font-size:11px;color:var(--txt2);margin-top:2px}
+.alert-time{font-size:11px;color:var(--txt3);margin-left:auto;white-space:nowrap}
+
+.machine-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.mcard{background:var(--c2);border:0.5px solid var(--c3);border-radius:var(--br2);padding:16px;cursor:pointer;transition:all .15s}
+.mcard:hover{border-color:var(--acc);background:var(--c3)}
+.mcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.mcard-id{font-size:11px;color:var(--txt3);margin-bottom:2px}
+.mcard-name{font-size:14px;font-weight:600}
+.mcard-icon{width:38px;height:38px;border-radius:10px;background:rgba(79,142,247,.12);display:flex;align-items:center;justify-content:center;color:var(--acc);font-size:20px}
+.mcard-info{font-size:12px;color:var(--txt2);margin-top:2px}
+.mcard-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:0.5px solid var(--c3)}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group.full{grid-column:1/-1}
+label{font-size:12px;color:var(--txt2)}
+input,select,textarea{background:var(--c3);border:0.5px solid var(--c4);border-radius:8px;padding:8px 12px;color:var(--txt);font-size:13px;width:100%;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--acc)}
+textarea{resize:vertical;min-height:80px}
+select option{background:var(--c3)}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:100;display:none}
+.modal-overlay.show{display:flex}
+.modal{background:var(--c2);border:0.5px solid var(--c4);border-radius:var(--br2);padding:24px;width:600px;max-height:90vh;overflow-y:auto}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.modal-footer{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;padding-top:16px;border-top:0.5px solid var(--c3)}
+
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;gap:16px;padding-bottom:20px;position:relative}
+.tl-item:last-child{padding-bottom:0}
+.tl-left{display:flex;flex-direction:column;align-items:center;gap:4px}
+.tl-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.tl-dot.grn{background:rgba(34,197,94,.15);color:#4ade80}
+.tl-dot.red{background:rgba(239,68,68,.15);color:#f87171}
+.tl-dot.blue{background:rgba(79,142,247,.15);color:#93c5fd}
+.tl-line{flex:1;width:1px;background:var(--c3)}
+.tl-content{flex:1;padding-bottom:4px}
+.tl-date{font-size:11px;color:var(--txt3);margin-bottom:3px}
+.tl-title{font-size:13px;font-weight:500}
+.tl-desc{font-size:12px;color:var(--txt2);margin-top:3px}
+
+.tab-bar{display:flex;gap:4px;border-bottom:0.5px solid var(--c3);margin-bottom:20px}
+.tab{padding:9px 16px;border-radius:8px 8px 0 0;cursor:pointer;font-size:13px;color:var(--txt2);border-bottom:2px solid transparent;transition:all .15s}
+.tab.active{color:var(--acc);border-bottom-color:var(--acc);background:rgba(79,142,247,.07)}
+.tab:hover{color:var(--txt)}
+
+.hour-meter{background:var(--c3);border-radius:12px;padding:16px;text-align:center}
+.hour-value{font-size:36px;font-weight:700;color:var(--acc);line-height:1}
+.hour-unit{font-size:13px;color:var(--txt3);margin-top:4px}
+
+.chart-bar-wrap{display:flex;flex-direction:column;gap:8px}
+.chart-row{display:flex;align-items:center;gap:10px}
+.chart-label{width:70px;font-size:11px;color:var(--txt2);text-align:right;flex-shrink:0}
+.chart-track{flex:1;height:22px;background:var(--c3);border-radius:4px;overflow:hidden;position:relative}
+.chart-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:500;color:#fff;transition:width .4s}
+.chart-val{width:36px;font-size:11px;color:var(--txt2);text-align:right;flex-shrink:0}
+
+.search-bar{display:flex;gap:10px;margin-bottom:16px}
+.search-input{flex:1;background:var(--c2);border:0.5px solid var(--c3);border-radius:8px;padding:8px 14px;color:var(--txt);font-size:13px;outline:none}
+.search-input:focus{border-color:var(--acc)}
+
+.hidden{display:none!important}
+
+.detail-header{background:var(--c2);border:0.5px solid var(--c3);border-radius:var(--br2);padding:20px;margin-bottom:16px;display:flex;gap:20px;align-items:flex-start}
+.detail-icon{width:56px;height:56px;border-radius:14px;background:rgba(79,142,247,.12);display:flex;align-items:center;justify-content:center;color:var(--acc);font-size:28px;flex-shrink:0}
+.detail-info{flex:1}
+.detail-id{font-size:12px;color:var(--txt3);margin-bottom:3px}
+.detail-name{font-size:20px;font-weight:700;margin-bottom:6px}
+.detail-tags{display:flex;gap:8px;flex-wrap:wrap}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.info-item{background:var(--c2);border:0.5px solid var(--c3);border-radius:var(--br);padding:12px}
+.info-item-label{font-size:11px;color:var(--txt3);margin-bottom:4px}
+.info-item-value{font-size:14px;font-weight:500}
+
+.pm-card{background:var(--c3);border-radius:var(--br);padding:14px;margin-bottom:10px}
+.pm-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.pm-name{font-size:13px;font-weight:600}
+.pm-freq{font-size:11px;color:var(--txt2)}
+.pm-next{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--txt2)}
+
+.snackbar{position:fixed;bottom:24px;right:24px;background:#22c55e;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
+.snackbar.show{opacity:1}
+</style>
+
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">ระบบทะเบียนเครื่องจักร Machine Registry System</h2>
+
+<div class="app">
+<div class="sidebar">
+  <div class="logo">
+    <div class="logo-title"><i class="ti ti-settings-2" style="color:var(--acc)"></i> MachineReg</div>
+    <div class="logo-sub">ระบบทะเบียนเครื่องจักร</div>
+  </div>
+  <nav class="nav">
+    <div class="nav-section">หลัก</div>
+    <div class="nav-item active" onclick="showPage('dashboard')"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+    <div class="nav-item" onclick="showPage('machines')"><i class="ti ti-engine"></i> ทะเบียนเครื่องจักร</div>
+    <div class="nav-section">บำรุงรักษา</div>
+    <div class="nav-item" onclick="showPage('maintenance')"><i class="ti ti-tool"></i> ประวัติซ่อมบำรุง</div>
+    <div class="nav-item" onclick="showPage('plan')"><i class="ti ti-calendar-check"></i> แผน PM</div>
+    <div class="nav-item" onclick="showPage('hours')"><i class="ti ti-clock"></i> บันทึกชั่วโมง</div>
+    <div class="nav-section">รายงาน</div>
+    <div class="nav-item" onclick="showPage('alerts')"><i class="ti ti-bell" style="color:var(--amb)"></i> แจ้งเตือน <span style="background:var(--red);color:#fff;border-radius:20px;font-size:10px;padding:1px 6px;margin-left:auto">3</span></div>
+    <div class="nav-item" onclick="showPage('report')"><i class="ti ti-chart-bar"></i> รายงาน</div>
+  </nav>
+  <div style="padding:14px;border-top:0.5px solid var(--c3)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--acc2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600">นก</div>
+      <div><div style="font-size:13px;font-weight:500">นักศึกษา</div><div style="font-size:11px;color:var(--txt3)">Admin</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- DASHBOARD -->
+<div id="page-dashboard">
+  <div class="topbar">
+    <div class="page-title"><i class="ti ti-layout-dashboard" style="color:var(--acc)"></i> Dashboard ภาพรวม</div>
+    <div class="topbar-actions">
+      <span style="font-size:12px;color:var(--txt3)">อัปเดต: วันนี้ 09:30</span>
+    </div>
+  </div>
+  <div class="content">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label"><i class="ti ti-engine" aria-hidden="true"></i> เครื่องจักรทั้งหมด</div>
+        <div class="stat-value">24</div>
+        <div class="stat-sub"><span class="stat-dot dot-grn"></span>18 ใช้งาน &nbsp;<span class="stat-dot dot-red"></span>3 ซ่อม</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label"><i class="ti ti-clock" aria-hidden="true"></i> PM ที่ถึงกำหนด</div>
+        <div class="stat-value" style="color:var(--amb)">5</div>
+        <div class="stat-sub"><span class="stat-dot dot-red"></span>2 เกินกำหนด</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label"><i class="ti ti-tool" aria-hidden="true"></i> งานซ่อมเดือนนี้</div>
+        <div class="stat-value">12</div>
+        <div class="stat-sub"><span class="stat-dot dot-blue"></span>8 PM &nbsp;<span class="stat-dot dot-red"></span>4 CM</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label"><i class="ti ti-chart-line" aria-hidden="true"></i> ชั่วโมงรวมวันนี้</div>
+        <div class="stat-value">487</div>
+        <div class="stat-sub" style="color:var(--grn)">+12% จากเดือนที่แล้ว</div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="ti ti-bell" style="color:var(--amb)"></i> แจ้งเตือนด่วน</h3>
+          <span class="badge badge-red">3 รายการ</span>
+        </div>
+        <div class="alert-item">
+          <div class="alert-icon red"><i class="ti ti-alert-triangle"></i></div>
+          <div><div class="alert-title">CNC-001 — PM เกินกำหนด 5 วัน</div><div class="alert-sub">ถึงกำหนด: 3 พ.ค. 2568</div></div>
+          <div class="alert-time"><span class="badge badge-red">เร่งด่วน</span></div>
+        </div>
+        <div class="alert-item">
+          <div class="alert-icon red"><i class="ti ti-alert-triangle"></i></div>
+          <div><div class="alert-title">PUMP-003 — น้ำมันหล่อลื่นต่ำ</div><div class="alert-sub">ตรวจสอบทันที</div></div>
+          <div class="alert-time"><span class="badge badge-red">เร่งด่วน</span></div>
+        </div>
+        <div class="alert-item">
+          <div class="alert-icon amb"><i class="ti ti-clock"></i></div>
+          <div><div class="alert-title">LATHE-002 — PM ถึงกำหนดใน 3 วัน</div><div class="alert-sub">กำหนด: 11 พ.ค. 2568</div></div>
+          <div class="alert-time"><span class="badge badge-amb">เร็วๆนี้</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3><i class="ti ti-chart-pie" style="color:var(--acc)"></i> สถานะเครื่องจักร</h3></div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px">ใช้งานปกติ</span><span style="font-size:13px;font-weight:600;color:var(--grn)">18 / 24</span></div>
+            <div class="progress-bar"><div class="progress-fill grn" style="width:75%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px">กำลังซ่อม</span><span style="font-size:13px;font-weight:600;color:var(--red)">3 / 24</span></div>
+            <div class="progress-bar"><div class="progress-fill red" style="width:12.5%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px">รอ PM</span><span style="font-size:13px;font-weight:600;color:var(--amb)">3 / 24</span></div>
+            <div class="progress-bar"><div class="progress-fill amb" style="width:12.5%"></div></div>
+          </div>
+        </div>
+        <div style="margin-top:16px;padding-top:14px;border-top:0.5px solid var(--c3)">
+          <div style="font-size:12px;color:var(--txt3);margin-bottom:8px">การซ่อมรายเดือน (PM/CM)</div>
+          <div class="chart-bar-wrap">
+            <div class="chart-row"><div class="chart-label">PM</div><div class="chart-track"><div class="chart-fill" style="width:67%;background:var(--acc)">8</div></div><div class="chart-val">8</div></div>
+            <div class="chart-row"><div class="chart-label">CM</div><div class="chart-track"><div class="chart-fill" style="width:33%;background:var(--red)">4</div></div><div class="chart-val">4</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-full">
+        <div class="card-header"><h3><i class="ti ti-calendar" style="color:var(--acc)"></i> แผน PM สัปดาห์นี้</h3><button class="btn btn-ghost btn-sm" onclick="showPage('plan')">ดูทั้งหมด →</button></div>
+        <table>
+          <thead><tr><th>เครื่องจักร</th><th>ประเภท</th><th>กำหนดวัน</th><th>ช่างรับผิดชอบ</th><th>สถานะ</th></tr></thead>
+          <tbody>
+            <tr><td>CNC-001 มิลลิ่ง A</td><td>PM 1,000 ชม.</td><td>8 พ.ค. 2568</td><td>สมชาย ก.</td><td><span class="badge badge-red">เกินกำหนด</span></td></tr>
+            <tr><td>LATHE-002 กลึง B</td><td>PM รายเดือน</td><td>11 พ.ค. 2568</td><td>วิชัย ส.</td><td><span class="badge badge-amb">รอดำเนินการ</span></td></tr>
+            <tr><td>PUMP-005 ปั๊มน้ำ</td><td>เปลี่ยนน้ำมัน</td><td>12 พ.ค. 2568</td><td>อนุชา พ.</td><td><span class="badge badge-amb">รอดำเนินการ</span></td></tr>
+            <tr><td>COMP-002 คอมเพรสเซอร์</td><td>PM 500 ชม.</td><td>14 พ.ค. 2568</td><td>สมชาย ก.</td><td><span class="badge badge-grn">นัดหมายแล้ว</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MACHINES -->
+<div id="page-machines" class="hidden">
+  <div class="topbar">
+    <div class="page-title"><i class="ti ti-engine" style="color:var(--acc)"></i> ทะเบียนเครื่องจักร</div>
+    <div class="topbar-actions">
+      <button class="btn btn-primary" onclick="openModal('modal-add')"><i class="ti ti-plus"></i> เพิ่มเครื่องจักร</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="search-bar">
+      <input class="search-input" type="text" placeholder="🔍 ค้นหาเครื่องจักร รหัส ชื่อ หรือแผนก...">
+      <select style="background:var(--c2);border:0.5px solid var(--c3);color:var(--txt);padding:8px 12px;border-radius:8px;font-size:13px">
+        <option>ทุกสถานะ</option><option>ใช้งาน</option><option>ซ่อมบำรุง</option><option>หยุดใช้งาน</option>
+      </select>
+      <select style="background:var(--c2);border:0.5px solid var(--c3);color:var(--txt);padding:8px 12px;border-radius:8px;font-size:13px">
+        <option>ทุกแผนก</option><option>การผลิต</option><option>สาธารณูปโภค</option><option>บรรจุภัณฑ์</option>
+      </select>
+    </div>
+    <div class="machine-grid">
+      <div class="mcard" onclick="showDetail()">
+        <div class="mcard-top">
+          <div><div class="mcard-id">CNC-001</div><div class="mcard-name">เครื่อง CNC มิลลิ่ง A</div><div class="mcard-info">แผนก: การผลิต</div></div>
+          <div class="mcard-icon"><i class="ti ti-settings-2"></i></div>
+        </div>
+        <div style="font-size:12px;color:var(--txt2);margin-bottom:10px">ยี่ห้อ: FANUC &nbsp;|&nbsp; ปี: 2562 &nbsp;|&nbsp; 4,250 ชม.</div>
+        <div class="progress-bar" style="margin-bottom:6px"><div class="progress-fill amb" style="width:85%"></div></div>
+        <div style="font-size:11px;color:var(--txt3);margin-bottom:10px">PM: 85% ถึงกำหนด</div>
+        <div class="mcard-footer">
+          <span class="badge badge-grn">ใช้งาน</span>
+          <span style="font-size:11px;color:var(--txt3)">PM ถัดไป: 3 พ.ค.</span>
+        </div>
+      </div>
+      <div class="mcard">
+        <div class="mcard-top">
+          <div><div class="mcard-id">LATHE-002</div><div class="mcard-name">เครื่องกลึง B</div><div class="mcard-info">แผนก: การผลิต</div></div>
+          <div class="mcard-icon" style="background:rgba(239,68,68,.1);color:var(--red)"><i class="ti ti-tool"></i></div>
+        </div>
+        <div style="font-size:12px;color:var(--txt2);margin-bottom:10px">ยี่ห้อ: HAAS &nbsp;|&nbsp; ปี: 2560 &nbsp;|&nbsp; 6,800 ชม.</div>
+        <div class="progress-bar" style="margin-bottom:6px"><div class="progress-fill grn" style="width:40%"></div></div>
+        <div style="font-size:11px;color:var(--txt3);margin-bottom:10px">PM: 40% ถึงกำหนด</div>
+        <div class="mcard-footer">
+          <span class="badge badge-red">ซ่อมบำรุง</span>
+          <span style="font-size:11px;color:var(--txt3)">PM ถัดไป: 11 พ.ค.</span>
+        </div>
+      </div>
+      <div class="mcard">
+        <div class="mcard-top">
+          <div><div class="mcard-id">PUMP-003</div><div class="mcard-name">ปั๊มน้ำหล่อเย็น</div><div class="mcard-info">แผนก: สาธารณูปโภค</div></div>
+          <div class="mcard-icon" style="background:rgba(245,158,11,.1);color:var(--amb)"><i class="ti ti-droplet"></i></div>
+        </div>
+        <div style="font-size:12px;color:var(--txt2);margin-bottom:10px">ยี่ห้อ: Grundfos &nbsp;|&nbsp; ปี: 2563 &nbsp;|&nbsp; 3,100 ชม.</div>
+        <div class="progress-bar" style="margin-bottom:6px"><div class="progress-fill grn" style="width:55%"></div></div>
+        <div style="font-size:11px;color:var(--txt3);margin-bottom:10px">PM: 55% ถึงกำหนด</div>
+        <div class="mcard-footer">
+          <span class="badge badge-grn">ใช้งาน</span>
+          <span style="font-size:11px;color:var(--txt3)">PM ถัดไป: 20 พ.ค.</span>
+        </div>
+      </div>
+      <div class="mcard">
+        <div class="mcard-top">
+          <div><div class="mcard-id">COMP-002</div><div class="mcard-name">คอมเพรสเซอร์อากาศ</div><div class="mcard-info">แผนก: สาธารณูปโภค</div></div>
+          <div class="mcard-icon" style="background:rgba(34,197,94,.1);color:var(--grn)"><i class="ti ti-air-balloon"></i></div>
+        </div>
+        <div style="font-size:12px;color:var(--txt2);margin-bottom:10px">ยี่ห้อ: Atlas Copco &nbsp;|&nbsp; ปี: 2561 &nbsp;|&nbsp; 5,600 ชม.</div>
+        <div class="progress-bar" style="margin-bottom:6px"><div class="progress-fill grn" style="width:30%"></div></div>
+        <div style="font-size:11px;color:var(--txt3);margin-bottom:10px">PM: 30% ถึงกำหนด</div>
+        <div class="mcard-footer">
+          <span class="badge badge-grn">ใช้งาน</span>
+          <span style="font-size:11px;color:var(--txt3)">PM ถัดไป: 14 พ.ค.</span>
+        </div>
+      </div>
+      <div class="mcard">
+        <div class="mcard-top">
+          <div><div class="mcard-id">CONV-001</div><div class="mcard-name">สายพานลำเลียง 1</div><div class="mcard-info">แผนก: บรรจุภัณฑ์</div></div>
+          <div class="mcard-icon" style="background:rgba(124,92,252,.1);color:var(--acc2)"><i class="ti ti-arrows-right"></i></div>
+        </div>
+        <div style="font-size:12px;color:var(--txt2);margin-bottom:10px">ยี่ห้อ: Intralox &nbsp;|&nbsp; ปี: 2564 &nbsp;|&nbsp; 2,400 ชม.</div>
+        <div class="progress-bar" style="margin-bottom:6px"><div class="progress-fill grn" style="width:20%"></div></div>
+        <div style="font-size:11px;color:var(--txt3);margin-bottom:10px">PM: 20% ถึงกำหนด</div>
+        <div class="mcard-footer">
+          <span class="badge badge-grn">ใช้งาน</span>
+          <span style="font-size:11px;color:var(--txt3)">PM ถัดไป: 25 พ.ค.</span>
+        </div>
+      </div>
+      <div class="mcard" style="border:1px dashed var(--c4);display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:160px;flex-direction:column;gap:8px;color:var(--txt3)" onclick="openModal('modal-add')">
+        <i class="ti ti-plus" style="font-size:28px;color:var(--c4)"></i>
+        <span style="font-size:13px">เพิ่มเครื่องจักรใหม่</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MACHINE DETAIL -->
+<div id="page-detail" class="hidden">
+  <div class="topbar">
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="showPage('machines')"><i class="ti ti-arrow-left"></i> กลับ</button>
+      <div class="page-title" style="margin-left:8px">CNC-001 — เครื่อง CNC มิลลิ่ง A</div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i> แก้ไข</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal('modal-maint')"><i class="ti ti-plus"></i> บันทึกซ่อม</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="detail-header">
+      <div class="detail-icon"><i class="ti ti-settings-2"></i></div>
+      <div class="detail-info">
+        <div class="detail-id">รหัส: CNC-001</div>
+        <div class="detail-name">เครื่อง CNC มิลลิ่ง A</div>
+        <div class="detail-tags">
+          <span class="badge badge-grn">ใช้งาน</span>
+          <span class="badge badge-blue">การผลิต</span>
+          <span class="badge badge-amb">PM ใกล้ถึงกำหนด</span>
+        </div>
+      </div>
+      <div class="hour-meter" style="min-width:130px">
+        <div class="hour-value">4,250</div>
+        <div class="hour-unit">ชั่วโมงเดิน</div>
+      </div>
+    </div>
+    <div class="info-grid">
+      <div class="info-item"><div class="info-item-label">ยี่ห้อ / รุ่น</div><div class="info-item-value">FANUC Robodrill</div></div>
+      <div class="info-item"><div class="info-item-label">ปีที่ซื้อ</div><div class="info-item-value">2562</div></div>
+      <div class="info-item"><div class="info-item-label">มูลค่า</div><div class="info-item-value">2,500,000 บาท</div></div>
+      <div class="info-item"><div class="info-item-label">Supplier</div><div class="info-item-value">FANUC Thailand</div></div>
+      <div class="info-item"><div class="info-item-label">ที่ตั้ง</div><div class="info-item-value">โรงงาน A อาคาร 1</div></div>
+      <div class="info-item"><div class="info-item-label">ช่างรับผิดชอบ</div><div class="info-item-value">สมชาย ก.</div></div>
+    </div>
+    <div class="tab-bar">
+      <div class="tab active" onclick="switchTab(this,'tab-history')">ประวัติซ่อมบำรุง</div>
+      <div class="tab" onclick="switchTab(this,'tab-pm')">แผน PM</div>
+      <div class="tab" onclick="switchTab(this,'tab-hours')">บันทึกชั่วโมง</div>
+    </div>
+    <div id="tab-history">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-dot grn"><i class="ti ti-check" style="font-size:13px"></i></div><div class="tl-line"></div></div>
+          <div class="tl-content"><div class="tl-date">5 พ.ค. 2568 · สมชาย ก.</div><div class="tl-title">PM 4,000 ชั่วโมง — เปลี่ยนน้ำมันหล่อลื่น, ตรวจ spindle</div><div class="tl-desc">ใช้เวลา 4 ชม. ค่าใช้จ่าย: 2,800 บาท <span class="badge badge-blue" style="margin-left:6px">PM</span></div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-dot red"><i class="ti ti-tool" style="font-size:13px"></i></div><div class="tl-line"></div></div>
+          <div class="tl-content"><div class="tl-date">18 เม.ย. 2568 · วิชัย ส.</div><div class="tl-title">CM — แกน Y มีเสียงผิดปกติ</div><div class="tl-desc">เปลี่ยน bearing Y-axis ค่าใช้จ่าย: 8,500 บาท <span class="badge badge-red" style="margin-left:6px">CM</span></div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-dot grn"><i class="ti ti-check" style="font-size:13px"></i></div><div class="tl-line"></div></div>
+          <div class="tl-content"><div class="tl-date">2 มี.ค. 2568 · สมชาย ก.</div><div class="tl-title">PM 3,500 ชั่วโมง — ตรวจสอบระบบหล่อเย็น</div><div class="tl-desc">ปรับค่า coolant flow ค่าใช้จ่าย: 1,200 บาท <span class="badge badge-blue" style="margin-left:6px">PM</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-pm" class="hidden">
+      <div class="pm-card">
+        <div class="pm-header"><div class="pm-name">PM ทุก 500 ชั่วโมง — ตรวจสอบพื้นฐาน</div><span class="badge badge-grn">ใช้งาน</span></div>
+        <div class="pm-freq">ความถี่: ทุก 500 ชม. / ทำล่าสุด: 4,000 ชม.</div>
+        <div class="pm-next"><i class="ti ti-clock" aria-hidden="true"></i> ครั้งถัดไป: 4,500 ชม. (เหลือ 250 ชม.)</div>
+      </div>
+      <div class="pm-card">
+        <div class="pm-header"><div class="pm-name">PM ทุก 1,000 ชั่วโมง — เปลี่ยนน้ำมัน, Spindle</div><span class="badge badge-amb">ใกล้ถึงกำหนด</span></div>
+        <div class="pm-freq">ความถี่: ทุก 1,000 ชม. / ทำล่าสุด: 4,000 ชม.</div>
+        <div class="pm-next" style="color:var(--amb)"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ครั้งถัดไป: 5,000 ชม. (เหลือ 750 ชม.)</div>
+      </div>
+    </div>
+    <div id="tab-hours" class="hidden">
+      <table>
+        <thead><tr><th>วันที่</th><th>ชั่วโมงเดิน</th><th>ชั่วโมงสะสม</th><th>ผู้บันทึก</th><th>หมายเหตุ</th></tr></thead>
+        <tbody>
+          <tr><td>8 พ.ค. 2568</td><td>8.5 ชม.</td><td>4,250 ชม.</td><td>สมชาย ก.</td><td>ผลิตปกติ</td></tr>
+          <tr><td>7 พ.ค. 2568</td><td>7.0 ชม.</td><td>4,241.5 ชม.</td><td>สมชาย ก.</td><td>ผลิตปกติ</td></tr>
+          <tr><td>6 พ.ค. 2568</td><td>6.5 ชม.</td><td>4,234.5 ชม.</td><td>อนุชา พ.</td><td>หยุดพักกลางกะ 1 ชม.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MAINTENANCE -->
+<div id="page-maintenance" class="hidden">
+  <div class="topbar">
+    <div class="page-title"><i class="ti ti-tool" style="color:var(--acc)"></i> ประวัติการซ่อมบำรุง</div>
+    <div class="topbar-actions"><button class="btn btn-primary" onclick="openModal('modal-maint')"><i class="ti ti-plus"></i> บันทึกใหม่</button></div>
+  </div>
+  <div class="content">
+    <div class="search-bar">
+      <input class="search-input" type="text" placeholder="🔍 ค้นหา...">
+      <select style="background:var(--c2);border:0.5px solid var(--c3);color:var(--txt);padding:8px 12px;border-radius:8px;font-size:13px"><option>PM + CM</option><option>PM</option><option>CM</option></select>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>วันที่</th><th>รหัสเครื่อง</th><th>ชื่อเครื่อง</th><th>ประเภท</th><th>รายละเอียด</th><th>ช่าง</th><th>ค่าใช้จ่าย</th><th>สถานะ</th></tr></thead>
+        <tbody>
+          <tr><td>8 พ.ค. 68</td><td>CNC-001</td><td>CNC มิลลิ่ง A</td><td><span class="badge badge-blue">PM</span></td><td>เปลี่ยนน้ำมัน, ตรวจ spindle</td><td>สมชาย ก.</td><td>2,800 ฿</td><td><span class="badge badge-grn">เสร็จแล้ว</span></td></tr>
+          <tr><td>18 เม.ย. 68</td><td>LATHE-002</td><td>เครื่องกลึง B</td><td><span class="badge badge-red">CM</span></td><td>เปลี่ยน bearing Y-axis</td><td>วิชัย ส.</td><td>8,500 ฿</td><td><span class="badge badge-grn">เสร็จแล้ว</span></td></tr>
+          <tr><td>15 เม.ย. 68</td><td>PUMP-003</td><td>ปั๊มน้ำหล่อเย็น</td><td><span class="badge badge-blue">PM</span></td><td>ตรวจสอบ seal, แรงดัน</td><td>อนุชา พ.</td><td>1,500 ฿</td><td><span class="badge badge-grn">เสร็จแล้ว</span></td></tr>
+          <tr><td>10 เม.ย. 68</td><td>COMP-002</td><td>คอมเพรสเซอร์</td><td><span class="badge badge-red">CM</span></td><td>ventilation fan เสีย</td><td>สมชาย ก.</td><td>4,200 ฿</td><td><span class="badge badge-amb">รอดำเนินการ</span></td></tr>
+          <tr><td>5 เม.ย. 68</td><td>CNC-001</td><td>CNC มิลลิ่ง A</td><td><span class="badge badge-blue">PM</span></td><td>ตรวจสอบระบบหล่อเย็น</td><td>สมชาย ก.</td><td>1,200 ฿</td><td><span class="badge badge-grn">เสร็จแล้ว</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- PLAN PM -->
+<div id="page-plan" class="hidden">
+  <div class="topbar">
+    <div class="page-title"><i class="ti ti-calendar-check" style="color:var(--acc)"></i> แผนการบำรุงรักษา (PM Plan)</div>
+    <div class="topbar-actions"><button class="btn btn-primary"><i class="ti ti-plus"></i> เพิ่มแผน PM</button></div>
+  </div>
+  <div class="content">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="card" style="grid-column:1/-1">
+        <div class="card-header"><h3><i class="ti ti-calendar-stats" style="color:var(--acc)"></i> ปฏิทิน PM เดือน พฤษภาคม 2568</h3></div>
+        <table>
+          <thead><tr><th>เครื่องจักร</th><th>แผน PM</th><th>กำหนดวัน</th><th>ทริกเกอร์</th><th>ช่างรับผิดชอบ</th><th>สถานะ</th><th>การดำเนินการ</th></tr></thead>
+          <tbody>
+            <tr><td>CNC-001</td><td>PM 1,000 ชม.</td><td style="color:var(--red);font-weight:600">3 พ.ค. 68 ⚠</td><td>ชั่วโมงเดิน</td><td>สมชาย ก.</td><td><span class="badge badge-red">เกินกำหนด</span></td><td><button class="btn btn-primary btn-sm" onclick="showSnack('บันทึกเรียบร้อย')">บันทึกซ่อม</button></td></tr>
+            <tr><td>LATHE-002</td><td>PM รายเดือน</td><td>11 พ.ค. 68</td><td>รายเดือน</td><td>วิชัย ส.</td><td><span class="badge badge-amb">รอดำเนินการ</span></td><td><button class="btn btn-ghost btn-sm">นัดหมาย</button></td></tr>
+            <tr><td>PUMP-005</td><td>เปลี่ยนน้ำมัน</td><td>12 พ.ค. 68</td><td>รายเดือน</td><td>อนุชา พ.</td><td><span class="badge badge-amb">รอดำเนินการ</span></td><td><button class="btn btn-ghost btn-sm">นัดหมาย</button></td></tr>
+            <tr><td>COMP-002</td><td>PM 500 ชม.</td><td>14 พ.ค. 68</td><td>ชั่วโมงเดิน</td><td>สมชาย ก.</td><td><span class="badge badge-grn">นัดหมายแล้ว</span></td><td><button class="btn btn-ghost btn-sm">ดูรายละเอียด</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOURS -->
+<div id="page-hours" class="hidden">
+  <div class="topbar">
+    <div class="page-title"><i class="ti ti-clock" style="color:var(--acc)"></i> บันทึกการใช้งาน / ชั่วโมงเดิน</div>
+    <div class="topbar-actions"><button class="btn btn-primary" onclick="openModal('modal-hours')"><i class="ti ti-plus"></i> บันทึกชั่วโมง</button></div>
+  </div>
+  <div class="content">
+    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="stat-card"><div class="stat-label">ชั่วโมงรวมวันนี้</div><div class="stat-value" style="color:var(--acc)">156</div><div class="stat-sub">ทุกเครื่อง รวมกัน</div></div>
+      <div class="stat-card"><div class="stat-label">เครื่องที่วิ่งมากสุด</div><div class="stat-value">CNC-001</div><div class="stat-sub">8.5 ชม. วันนี้</div></div>
+      <div class="stat-card"><div class="stat-label">ชั่วโมงเดือนนี้</div><div class="stat-value">3,240</div><div class="stat-sub" style="color:var(--grn)">+8% จากเดือนที่แล้ว</div></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>วันที่</th><th>รหัสเครื่อง</th><th>ชื่อเครื่องจักร</th><th>ชั่วโมงวันนี้</th><th>ชั่วโมงสะสม</th><th>ผู้บันทึก</th><th>หมายเหตุ</th></tr></thead>
+        <tbody>
+          <tr><td>8 พ.ค. 68</td><td>CNC-001</td><td>CNC มิลลิ่ง A</td><td>8.5</td><td>4,250</td><td>สมชาย ก.</td><td>ผลิตปกติ</td></tr>
+          <tr><td>8 พ.ค. 68</td><td>LATHE-002</td><td>เครื่องกลึง B</td><td>0</td><td>6,800</td><td>—</td><td>อยู่ระหว่างซ่อม</td></tr>
+          <tr><td>8 พ.ค. 68</td><td>PUMP-003</td><td>ปั๊มน้ำหล่อเย็น</td><td>12.0</td><td>3,100</td><td>อนุชา พ.</td><td>เดินตลอดกะ</td></tr>
+          <tr><td>8 พ.ค. 68</td><td>COMP-002</td><td>คอมเพรสเซอร์อากาศ</td><td>10.5</td><td>5,600</td><td>วิชัย ส.</td><td>ผลิตปกติ</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ALERTS -->
+<div id="page-alerts" class="hidden">
+  <div class="topbar">
+    <div class="page-title"><i class="ti ti-bell" style="color:var(--amb)"></i> ศูนย์แจ้งเตือน</div>
+  </div>
+  <div class="content">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card" style="border-left:3px solid var(--red)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div class="alert-icon red" style="width:40px;height:40px;flex-shrink:0"><i class="ti ti-alert-triangle" style="font-size:18px"></i></div>
+            <div>
+              <div style="font-size:14px;font-weight:600;margin-bottom:4px">CNC-001 — PM เกินกำหนด 5 วัน</div>
+              <div style="font-size:13px;color:var(--txt2)">ถึงกำหนด PM 1,000 ชั่วโมง เมื่อ 3 พ.ค. 2568 — ยังไม่ได้ดำเนินการ</div>
+              <div style="font-size:12px;color:var(--txt3);margin-top:4px">ช่างรับผิดชอบ: สมชาย ก.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" onclick="showSnack('บันทึกซ่อมแล้ว')">บันทึกซ่อม</button><button class="btn btn-ghost btn-sm">เลื่อนกำหนด</button></div>
+        </div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--red)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div class="alert-icon red" style="width:40px;height:40px;flex-shrink:0"><i class="ti ti-droplet-off" style="font-size:18px"></i></div>
+            <div>
+              <div style="font-size:14px;font-weight:600;margin-bottom:4px">PUMP-003 — ระดับน้ำมันหล่อลื่นต่ำกว่าเกณฑ์</div>
+              <div style="font-size:13px;color:var(--txt2)">ตรวจพบระดับน้ำมันต่ำ ควรดำเนินการทันที</div>
+              <div style="font-size:12px;color:var(--txt3);margin-top:4px">แจ้งเตือนวันนี้ 08:15</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" onclick="showSnack('ส่งช่างแล้ว')">ส่งช่าง</button></div>
+        </div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--amb)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div class="alert-icon amb" style="width:40px;height:40px;flex-shrink:0"><i class="ti ti-clock" style="font-size:18px"></i></div>
+            <div>
+              <div style="font-size:14px;font-weight:600;margin-bottom:4px">LATHE-002 — PM ถึงกำหนดใน 3 วัน</div>
+              <div style="font-size:13px;color:var(--txt2)">PM รายเดือน กำหนด 11 พ.ค. 2568</div>
+              <div style="font-size:12px;color:var(--txt3);margin-top:4px">ช่างรับผิดชอบ: วิชัย ส.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="showSnack('นัดหมายแล้ว')">นัดหมาย</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT -->
+<div id="page-report" class="hidden">
+  <div class="topbar">
+    <div class="page-title"><i class="ti ti-chart-bar" style="color:var(--acc)"></i> รายงานสรุป</div>
+    <div class="topbar-actions"><button class="btn btn-ghost btn-sm"><i class="ti ti-download"></i> Export PDF</button></div>
+  </div>
+  <div class="content">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label">ค่าใช้จ่าย PM เดือนนี้</div><div class="stat-value">18,200</div><div class="stat-sub">บาท</div></div>
+      <div class="stat-card"><div class="stat-label">ค่าใช้จ่าย CM เดือนนี้</div><div class="stat-value" style="color:var(--red)">32,500</div><div class="stat-sub">บาท</div></div>
+      <div class="stat-card"><div class="stat-label">อัตราการพร้อมใช้งาน</div><div class="stat-value" style="color:var(--grn)">87.5%</div><div class="stat-sub">Machine Availability</div></div>
+      <div class="stat-card"><div class="stat-label">MTBF เฉลี่ย</div><div class="stat-value">342</div><div class="stat-sub">ชั่วโมงต่อครั้ง</div></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-header"><h3>ค่าใช้จ่ายรายเดือน</h3></div>
+        <div class="chart-bar-wrap">
+          <div class="chart-row"><div class="chart-label">ม.ค.</div><div class="chart-track"><div class="chart-fill" style="width:42%;background:var(--acc)"></div></div><div class="chart-val">21k</div></div>
+          <div class="chart-row"><div class="chart-label">ก.พ.</div><div class="chart-track"><div class="chart-fill" style="width:28%;background:var(--acc)"></div></div><div class="chart-val">14k</div></div>
+          <div class="chart-row"><div class="chart-label">มี.ค.</div><div class="chart-track"><div class="chart-fill" style="width:60%;background:var(--acc)"></div></div><div class="chart-val">30k</div></div>
+          <div class="chart-row"><div class="chart-label">เม.ย.</div><div class="chart-track"><div class="chart-fill" style="width:45%;background:var(--acc)"></div></div><div class="chart-val">22k</div></div>
+          <div class="chart-row"><div class="chart-label">พ.ค.</div><div class="chart-track"><div class="chart-fill" style="width:51%;background:var(--amb)"></div></div><div class="chart-val">50k</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>เครื่องที่ซ่อมบ่อยสุด</h3></div>
+        <div class="chart-bar-wrap">
+          <div class="chart-row"><div class="chart-label">CNC-001</div><div class="chart-track"><div class="chart-fill" style="width:80%;background:var(--red)">8 ครั้ง</div></div><div class="chart-val"></div></div>
+          <div class="chart-row"><div class="chart-label">LATHE-002</div><div class="chart-track"><div class="chart-fill" style="width:55%;background:var(--amb)">5 ครั้ง</div></div><div class="chart-val"></div></div>
+          <div class="chart-row"><div class="chart-label">PUMP-003</div><div class="chart-track"><div class="chart-fill" style="width:30%;background:var(--acc)">3 ครั้ง</div></div><div class="chart-val"></div></div>
+          <div class="chart-row"><div class="chart-label">COMP-002</div><div class="chart-track"><div class="chart-fill" style="width:20%;background:var(--grn)">2 ครั้ง</div></div><div class="chart-val"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end main -->
+</div><!-- end app -->
+
+<!-- MODAL: ADD MACHINE -->
+<div class="modal-overlay" id="modal-add" onclick="closeOnBg(event,'modal-add')">
+  <div class="modal">
+    <div class="modal-header"><h3><i class="ti ti-engine" style="color:var(--acc)"></i> เพิ่มเครื่องจักรใหม่</h3><button class="btn btn-ghost btn-sm" onclick="closeModal('modal-add')"><i class="ti ti-x"></i></button></div>
+    <div class="form-grid">
+      <div class="form-group"><label>รหัสเครื่องจักร *</label><input type="text" placeholder="เช่น CNC-005"></div>
+      <div class="form-group"><label>ชื่อเครื่องจักร *</label><input type="text" placeholder="ชื่อเครื่องจักร"></div>
+      <div class="form-group"><label>ยี่ห้อ</label><input type="text" placeholder="ยี่ห้อ"></div>
+      <div class="form-group"><label>รุ่น</label><input type="text" placeholder="รุ่น"></div>
+      <div class="form-group"><label>ปีที่ซื้อ</label><input type="number" placeholder="2568"></div>
+      <div class="form-group"><label>มูลค่า (บาท)</label><input type="number" placeholder="0"></div>
+      <div class="form-group"><label>แผนก</label><select><option>การผลิต</option><option>สาธารณูปโภค</option><option>บรรจุภัณฑ์</option></select></div>
+      <div class="form-group"><label>สถานะ</label><select><option>ใช้งาน</option><option>ซ่อมบำรุง</option><option>หยุดใช้งาน</option></select></div>
+      <div class="form-group"><label>ที่ตั้ง</label><input type="text" placeholder="อาคาร / โซน"></div>
+      <div class="form-group"><label>ช่างรับผิดชอบ</label><input type="text" placeholder="ชื่อช่าง"></div>
+      <div class="form-group full"><label>หมายเหตุ</label><textarea placeholder="ข้อมูลเพิ่มเติม..."></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-add')">ยกเลิก</button><button class="btn btn-primary" onclick="saveAndClose('modal-add')"><i class="ti ti-check"></i> บันทึก</button></div>
+  </div>
+</div>
+
+<!-- MODAL: MAINTENANCE -->
+<div class="modal-overlay" id="modal-maint" onclick="closeOnBg(event,'modal-maint')">
+  <div class="modal">
+    <div class="modal-header"><h3><i class="ti ti-tool" style="color:var(--acc)"></i> บันทึกการซ่อมบำรุง</h3><button class="btn btn-ghost btn-sm" onclick="closeModal('modal-maint')"><i class="ti ti-x"></i></button></div>
+    <div class="form-grid">
+      <div class="form-group"><label>เครื่องจักร *</label><select><option>CNC-001 — CNC มิลลิ่ง A</option><option>LATHE-002 — เครื่องกลึง B</option><option>PUMP-003 — ปั๊มน้ำ</option></select></div>
+      <div class="form-group"><label>ประเภท *</label><select><option>PM — ป้องกัน</option><option>CM — แก้ไข</option></select></div>
+      <div class="form-group"><label>วันที่ดำเนินการ *</label><input type="date"></div>
+      <div class="form-group"><label>ชั่วโมงเดิน ณ เวลาซ่อม</label><input type="number" placeholder="0"></div>
+      <div class="form-group"><label>ช่างผู้ดำเนินการ</label><input type="text" placeholder="ชื่อช่าง"></div>
+      <div class="form-group"><label>ระยะเวลา (ชั่วโมง)</label><input type="number" placeholder="0"></div>
+      <div class="form-group"><label>ค่าใช้จ่าย (บาท)</label><input type="number" placeholder="0"></div>
+      <div class="form-group"><label>สถานะ</label><select><option>เสร็จแล้ว</option><option>รอดำเนินการ</option><option>กำลังดำเนินการ</option></select></div>
+      <div class="form-group full"><label>รายละเอียดงาน *</label><textarea placeholder="อธิบายงานซ่อม อะไหล่ที่เปลี่ยน..."></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-maint')">ยกเลิก</button><button class="btn btn-primary" onclick="saveAndClose('modal-maint')"><i class="ti ti-check"></i> บันทึก</button></div>
+  </div>
+</div>
+
+<!-- MODAL: HOURS -->
+<div class="modal-overlay" id="modal-hours" onclick="closeOnBg(event,'modal-hours')">
+  <div class="modal" style="width:420px">
+    <div class="modal-header"><h3><i class="ti ti-clock" style="color:var(--acc)"></i> บันทึกชั่วโมงเดิน</h3><button class="btn btn-ghost btn-sm" onclick="closeModal('modal-hours')"><i class="ti ti-x"></i></button></div>
+    <div class="form-grid">
+      <div class="form-group full"><label>เครื่องจักร *</label><select><option>CNC-001 — CNC มิลลิ่ง A</option><option>LATHE-002 — เครื่องกลึง B</option><option>PUMP-003 — ปั๊มน้ำ</option></select></div>
+      <div class="form-group"><label>วันที่ *</label><input type="date"></div>
+      <div class="form-group"><label>ชั่วโมงเดิน (วันนี้)</label><input type="number" placeholder="0.0" step="0.5"></div>
+      <div class="form-group full"><label>หมายเหตุ</label><textarea placeholder="หมายเหตุ..." style="min-height:60px"></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-hours')">ยกเลิก</button><button class="btn btn-primary" onclick="saveAndClose('modal-hours')"><i class="ti ti-check"></i> บันทึก</button></div>
+  </div>
+</div>
+
+<div class="snackbar" id="snackbar"><i class="ti ti-check"></i> <span id="snack-msg">บันทึกสำเร็จ</span></div>
+
+<script>
+const pages = ['dashboard','machines','detail','maintenance','plan','hours','alerts','report'];
+function showPage(id){
+  pages.forEach(p=>document.getElementById('page-'+p).classList.add('hidden'));
+  document.getElementById('page-'+id).classList.remove('hidden');
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    n.classList.remove('active');
+    if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+id+"'"))n.classList.add('active');
+  });
+  window.scrollTo(0,0);
+}
+function showDetail(){showPage('detail')}
+function openModal(id){document.getElementById(id).classList.add('show')}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function closeOnBg(e,id){if(e.target.classList.contains('modal-overlay'))closeModal(id)}
+function saveAndClose(id){closeModal(id);showSnack('บันทึกสำเร็จ!')}
+function showSnack(msg){
+  const s=document.getElementById('snackbar');
+  document.getElementById('snack-msg').textContent=msg;
+  s.classList.add('show');
+  setTimeout(()=>s.classList.remove('show'),2500);
+}
+function switchTab(el,tid){
+  el.closest('.content').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const tabs=['tab-history','tab-pm','tab-hours'];
+  tabs.forEach(t=>{const el2=document.getElementById(t);if(el2)el2.classList.add('hidden')});
+  const target=document.getElementById(tid);
+  if(target)target.classList.remove('hidden');
+}
+</script>
